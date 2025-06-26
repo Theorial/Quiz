@@ -30,7 +30,7 @@ const pokemonAnswers = {
 
 // let imgPool = Object.keys(pokemonAnswers); 
 let imgPool = pokemonAnswers; 
-let answerPool = Object.values(pokemonAnswers)
+
 //1. first we need a shuffle function that doesnt allow repeated image or questions
 
 function shufflePairs(obj) {
@@ -45,22 +45,18 @@ function shufflePairs(obj) {
     return Object.fromEntries(entries); // returns shuffled object
   }
   
-console.log(shuffle(imgPool))
-
-function nextSequence(){
- shuffle(imgPool);
-// console.log(imgPool)
-imagevalues = imgPool[level]
-for (let i = imgPool.length - 1; i > 0; i--) {
-
-    $("#a").click(function () {
-        // your code here
-        console.log(`${}`);
-      });
-
+// console.log(shuffle(imgPool))
+function gameStart() {
+  shuffle(imgPool);
+  nextSequence();
 }
+gameStart();
+function gameOver () {
+gameStart();
 }
-nextSequence()
+function nextSequence() {
+  $("img").attr("src", imgPool[level]);
+}
 // function checkAnswer() {
 //   const correctAnswer = pokemonAnswers[gamePattern[currentLevel]];
 //   const userAnswer = userClickedPattern[currentLevel];
