@@ -44,23 +44,23 @@ function shufflePairs(obj) {
     // Optional: return as an array or convert back to object
     return Object.fromEntries(entries); // returns shuffled object
   }
-  
-console.log(shuffle(imgPool))
+ shuffled = shufflePairs(pokemonAnswers) 
+console.log(shuffled)
 
-function nextSequence(){
- shuffle(imgPool);
-// console.log(imgPool)
-imagevalues = imgPool[level]
-for (let i = imgPool.length - 1; i > 0; i--) {
+// function nextSequence(){
+//  shuffle(imgPool);
+// // console.log(imgPool)
+// imagevalues = imgPool[level]
+// for (let i = imgPool.length - 1; i > 0; i--) {
 
-    $("#a").click(function () {
-        // your code here
-        console.log(`${}`);
-      });
+//     $("#a").click(function () {
+//         // your code here
+//         console.log(`${}`);
+//       });
 
-}
-}
-nextSequence()
+// }
+// }
+// nextSequence()
 // function checkAnswer() {
 //   const correctAnswer = pokemonAnswers[gamePattern[currentLevel]];
 //   const userAnswer = userClickedPattern[currentLevel];
