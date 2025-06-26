@@ -28,34 +28,55 @@ const pokemonAnswers = {
   "img/zapdos.png": "Zapdos",
 };
 
-// let imgPool = Object.keys(pokemonAnswers); 
-let imgPool = pokemonAnswers; 
+// let imgPool = Object.keys(pokemonAnswers);
+let imgPool = pokemonAnswers;
 
 //1. first we need a shuffle function that doesnt allow repeated image or questions
 
 function shufflePairs(obj) {
-    const entries = Object.entries(obj); // [['img/articuno.png', 'Articuno'], ...]
-    
-    for (let i = entries.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [entries[i], entries[j]] = [entries[j], entries[i]];
-    }
-  
-    // Optional: return as an array or convert back to object
-    return Object.fromEntries(entries); // returns shuffled object
+  const entries = Object.entries(obj); // [['img/articuno.png', 'Articuno'], ...]
+
+  for (let i = entries.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [entries[i], entries[j]] = [entries[j], entries[i]];
   }
-  
-// console.log(shuffle(imgPool))
+
+  // Optional: return as an array or convert back to object
+  return Object.fromEntries(entries); // returns shuffled object
+}
+
 function gameStart() {
-  shuffle(imgPool);
+  imgPool = shufflePairs(imgPool);
   nextSequence();
 }
 gameStart();
-function gameOver () {
-gameStart();
+function gameOver() {
+  gameStart();
+}
+function indexLock(a) {
+  if (a >= 19) a -= 19;
+  return a;
+}
+function shuffle(a) {
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
 }
 function nextSequence() {
-  $("img").attr("src", imgPool[level]);
+  var selections = [
+    Object.values(imgPool)[currentindex],
+    Object.values(imgPool)[indexLock(currentindex + 1)],
+    Object.values(imgPool)[indexLock(currentindex + 2)],
+    Object.values(imgPool)[indexLock(currentindex + 3)],
+  ];
+  selections = shuffle(selections);
+  $("img").attr("src", Object.keys(imgPool)[currentindex]);
+  $("#a").text(selections[0]);
+  $("#b").text(selections[1]);
+  $("#c").text(selections[2]);
+  $("#d").text(selections[3]);
 }
 // function checkAnswer() {
 //   const correctAnswer = pokemonAnswers[gamePattern[currentLevel]];
