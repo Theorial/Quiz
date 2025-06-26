@@ -26,7 +26,7 @@ const pokemonAnswers = {
   "img/zapdos.png": "Zapdos",
 };
 
-let imgPool = Object.keys(pokemonAnswers); 
+let imgPool = Object.keys(pokemonAnswers);
 
 //1. first we need a shuffle function that doesnt allow repeated image or questions
 
@@ -35,12 +35,16 @@ function shuffle(image) {
     const j = Math.floor(Math.random() * (i + 1));
     [image[i], image[j]] = [image[j], image[i]];
   }
-  return image
+  return image;
 }
-console.log(shuffle(imgPool))
 
-function nextSequence(){
-
+function gameStart() {
+  shuffle(imgPool);
+  nextSequence();
+}
+gameStart();
+function nextSequence() {
+  $("img").attr("src", imgPool[level]);
 }
 // function checkAnswer() {
 //   const correctAnswer = pokemonAnswers[gamePattern[currentLevel]];

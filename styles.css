@@ -28,6 +28,8 @@ body {
   max-width: 500px;
   text-align: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding-left: 50px;
+  padding-right: 50px;
 }
 
 #question img {
