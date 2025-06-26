@@ -1,0 +1,18 @@
+html {
+  text-align: center;
+  height: 100%;
+  width: 100%;
+}
+#pannel {
+  border: 2px solid black;
+  margin: 0 auto;
+  margin-top: 30vh;
+  width: 30%;
+}
+#question {
+  text-align: left;
+  margin-left: 10px;
+}
+.answer {
+  text-align: left;
+}
