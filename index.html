@@ -1,27 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Quiz App</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-<div class="quiz-container">
-  <h1>Who's That Pokemon?</h1>
-  <img id="pokemon-img" src="img/pikachu.png" alt="Pokemon" />
-  <div id="quiz">
-    <div id="question">Question text</div>
-    <div id="answers">
-      <button class="answer-btn">A</button>
-      <button class="answer-btn">B</button>
-      <button class="answer-btn">C</button>
-      <button class="answer-btn">D</button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz App</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="quiz-container">
+      <h1>Who's That Pokemon?</h1>
+      <div id="quiz">
+        <div id="question">
+          <img id="pokemon-img" src="" alt="Who's that Pokémon?" />
+        </div>
+        <div id="answers">
+          <button class="answer-btn" id="a">A</button>
+          <button class="answer-btn" id="b">B</button>
+          <button class="answer-btn" id="c">C</button>
+          <button class="answer-btn" id="d">D</button>
+        </div>
+        <button id="next-btn">Next</button>
+      </div>
     </div>
-    <button id="next-btn">Next</button>
-  </div>
-</div>
-
-  <script src="quiz.js"></script>
-</body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="quiz.js"></script>
+  </body>
 </html>
