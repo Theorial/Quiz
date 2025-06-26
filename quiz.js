@@ -1,8 +1,10 @@
 var currentindex = 0;
 let currentImage = "";
 var userClickedPattern = [];
-var level = 0;
+var currentQuestion = 0;
 var started = false;
+var correctCount = 0;
+var wrongAnswers = 0;
 
 const pokemonAnswers = {
   "img/articuno.png": "Articuno",
@@ -26,23 +28,32 @@ const pokemonAnswers = {
   "img/zapdos.png": "Zapdos",
 };
 
-let imgPool = Object.keys(pokemonAnswers);
+// let imgPool = Object.keys(pokemonAnswers); 
+let imgPool = pokemonAnswers; 
 
 //1. first we need a shuffle function that doesnt allow repeated image or questions
 
-function shuffle(image) {
-  for (let i = image.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [image[i], image[j]] = [image[j], image[i]];
+function shufflePairs(obj) {
+    const entries = Object.entries(obj); // [['img/articuno.png', 'Articuno'], ...]
+    
+    for (let i = entries.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [entries[i], entries[j]] = [entries[j], entries[i]];
+    }
+  
+    // Optional: return as an array or convert back to object
+    return Object.fromEntries(entries); // returns shuffled object
   }
-  return image;
-}
-
+  
+// console.log(shuffle(imgPool))
 function gameStart() {
   shuffle(imgPool);
   nextSequence();
 }
 gameStart();
+function gameOver () {
+gameStart();
+}
 function nextSequence() {
   $("img").attr("src", imgPool[level]);
 }
