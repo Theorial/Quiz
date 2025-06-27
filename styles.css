@@ -69,8 +69,17 @@ body {
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
+#restart-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
 
 #next-btn:hover {
   background-color: #1e87dc;
 }
-
