@@ -45,21 +45,22 @@ function shufflePairs(obj) {
   return Object.fromEntries(entries); // returns shuffled object
 }
 
-
 // console.log(shuffle(imgPool))
-
 function gameStart() {
   started = true;
-  imgPool = shufflePairs(imgPool);
-  $("#next-btn").hide();
-  $("#level-title").text("Level " + (currentindex + 1));
+  imgPool = shufflePairs(pokemonAnswers);
+  currentindex = 0;
+  correctCount = 0;
+  wrongAnswers = 0;
+  resetUI();
   nextSequence();
 }
-
-// gameStart();
-// function gameOver() {
-//   gameStart();
-// }
+function resetUI() {
+  $(".answer-btn").prop("disabled", false).css("background-color", "");
+  $("#next-btn").hide();
+  $("#restart-btn").hide();
+  $("#level-title").text("Level " + (currentindex + 1));
+}
 function indexLock(a) {
   if (a >= 19) a -= 19;
   return a;
@@ -72,14 +73,16 @@ function shuffle(a) {
   }
   return a;
 }
-
-$(document).click(function () {
-  if (!started) { // Check if the game has not started yet
-    $("#level-title").text("Level " + (currentindex + 1));
-    started = true; 
-    gameStart(); // Start the game
-  }
-});
+function showGameOver() {
+  console.log("Game Over function running");
+  $("#level-title").html(`
+    <span style="font-size: 28px;">Game Over!</span><br>
+    <strong>Correct:</strong> ${correctCount}<br>
+    <strong>Wrong:</strong> ${wrongAnswers}
+  `);
+  $("#next-btn").hide();
+  $("#restart-btn").show();
+}
 
 function nextSequence() {
   var selections = [
@@ -101,7 +104,7 @@ $(".answer-btn").click(function () {
 
   const userAnswer = $(this).text();
   const correctAnswer = Object.values(imgPool)[currentindex];
-   // shows the next button when answer
+  // shows the next button when answer
   $(".answer-btn").prop("disabled", true);
   $("#next-btn").show();
 
@@ -118,28 +121,25 @@ $(".answer-btn").click(function () {
       }
     });
   }
-
- 
-
 });
 
 // Handle Next button click
 $("#next-btn").click(function () {
   currentindex++;
-
+  console.log("Next clicked. Index:", currentindex); // Debug log
   if (currentindex >= Object.keys(imgPool).length) {
-    $("#level-title").text(`Game Over! ${correctCount} |  ${wrongAnswers}`);
+    console.log("Calling showGameOver"); // Debug log
+    showGameOver();
     started = false;
-    $("#next-btn").hide();
     return;
   }
-
-  $("#next-btn").hide();
-  $(".answer-btn").prop("disabled", false).css("background-color", "");
-  $("#level-title").text("Level " + (currentindex + 1));
   nextSequence();
+  resetUI();
 });
 
+$("#restart-btn").click(function () {
+  gameStart();
+});
 
 gameStart();
 // Start game on keypress
