@@ -119,7 +119,7 @@ function showGameOver() {
   // Update the display
   $("#level-title").html(`
     <div style="text-align: center">
-      <div style="font-size: 32px; color: red; margin-bottom: 5px">
+      <div style="font-size: 32px; color: red;">
         GAME OVER
       </div>
       ${scoreDetails}
