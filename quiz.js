@@ -45,18 +45,26 @@ function shufflePairs(obj) {
   return Object.fromEntries(entries); // returns shuffled object
 }
 
+
+// console.log(shuffle(imgPool))
+
 function gameStart() {
+  started = true;
   imgPool = shufflePairs(imgPool);
+  $("#next-btn").hide();
+  $("#level-title").text("Level " + (currentindex + 1));
   nextSequence();
 }
-gameStart();
-function gameOver() {
-  gameStart();
-}
+
+// gameStart();
+// function gameOver() {
+//   gameStart();
+// }
 function indexLock(a) {
   if (a >= 19) a -= 19;
   return a;
 }
+
 function shuffle(a) {
   for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -64,6 +72,15 @@ function shuffle(a) {
   }
   return a;
 }
+
+$(document).click(function () {
+  if (!started) { // Check if the game has not started yet
+    $("#level-title").text("Level " + (currentindex + 1));
+    started = true; 
+    gameStart(); // Start the game
+  }
+});
+
 function nextSequence() {
   var selections = [
     Object.values(imgPool)[currentindex],
@@ -78,110 +95,63 @@ function nextSequence() {
   $("#c").text(selections[2]);
   $("#d").text(selections[3]);
 }
-// function checkAnswer() {
-//   const correctAnswer = pokemonAnswers[gamePattern[currentLevel]];
-//   const userAnswer = userClickedPattern[currentLevel];
 
-//   if (userAnswer === correctAnswer) {
-//     console.log("correct");
-//     setTimeout(nextSequence, 1000);
-//   } else {
-//     console.log("wrong");
-//     $("body").addClass("game-over");
-//     setTimeout(() => $("body").removeClass("game-over"), 200);
-//     $("#level-title").text("Game Over, Press A Key to Restart");
-//     startOver();
-//   }
-// }
+$(".answer-btn").click(function () {
+  if (!started) return;
 
-// // $(".answer-btn").click(function () {
-// //   const userAnswer = $(this).text();
-// //   userClickedPattern.push(userAnswer);
-// //   checkAnswer(userClickedPattern.length - 1);
-// // });
+  const userAnswer = $(this).text();
+  const correctAnswer = Object.values(imgPool)[currentindex];
+   // shows the next button when answer
+  $(".answer-btn").prop("disabled", true);
+  $("#next-btn").show();
 
-// // $(document).keypress(function () {
-// //   if (!started) {
-// //     $("#level-title").text("Level " + level);
-// //     nextSequence();
-// //     started = true;
-// //   }
-// // });
+  if (userAnswer === correctAnswer) {
+    correctCount++;
+    $(this).css("background-color", "green");
+  } else {
+    wrongAnswers++;
+    $(this).css("background-color", "red");
+    // highlights the right answer
+    $(".answer-btn").each(function () {
+      if ($(this).text() === correctAnswer) {
+        $(this).css("background-color", "green");
+      }
+    });
+  }
 
-// function startOver() {
-//   currentindex = 0;
-//   level = 0;
-//   userClickedPattern = [];
-//   currentCorrectPokemonImage = ""; // Reset the correct image
-//   started = false;
-//   // Optionally, you might want to re-shuffle imgPool here if you want a fresh order each game
-//   shuffle(imgPool);
-//   // Clear the image and answer buttons if needed, or nextSequence will handle it
-//   $("#pokemon-img").attr("src", "");
-//   $(".answer-btn").text("");
-// }
+ 
 
-// function nextSequence() {
-//   // Reset user's answer for the new question
-//   userClickedPattern = [];
+});
 
-//   // If all Pokémon have been guessed
-//   if (currentindex >= imgPool.length) {
-//     $("#level-title").text("You guessed all Pokémon! Congratulations!");
-//     // Consider adding a "Play Again" button or similar here
-//     return;
-//   }
+// Handle Next button click
+$("#next-btn").click(function () {
+  currentindex++;
 
-//   level++;
-//   // Ensure you have an element with id="level-title" in your HTML!
-//   $("#level-title").text("Level " + level);
+  if (currentindex >= Object.keys(imgPool).length) {
+    $("#level-title").text(`Game Over! ${correctCount} |  ${wrongAnswers}`);
+    started = false;
+    $("#next-btn").hide();
+    return;
+  }
 
-//   // Get the current Pokémon image path and set it as the correct one
-//   currentCorrectPokemonImage = imgPool[currentindex];
-//   console.log("Setting image to:", currentCorrectPokemonImage);
+  $("#next-btn").hide();
+  $(".answer-btn").prop("disabled", false).css("background-color", "");
+  $("#level-title").text("Level " + (currentindex + 1));
+  nextSequence();
+});
 
-//   // Set the Pokémon image source
-//   $("#pokemon-img").attr("src", currentCorrectPokemonImage);
 
-//   // Get the correct Pokémon name for the options
-//   const correctAnswerName = pokemonAnswers[currentCorrectPokemonImage];
-
-//   // Generate 3 incorrect options (names)
-//   const allPokemonNames = Object.values(pokemonAnswers);
-//   const incorrectOptions = allPokemonNames.filter(
-//     (name) => name !== correctAnswerName
-//   );
-//   shuffle(incorrectOptions); // Shuffle all incorrect options
-//   const selectedIncorrectOptions = incorrectOptions.slice(0, 3); // Take 3 random incorrect ones
-
-//   // Combine correct answer with 3 incorrect ones
-//   const options = [correctAnswerName, ...selectedIncorrectOptions];
-//   shuffle(options); // Shuffle the final options array
-
-//   // Set the text for each answer button
-//   $(".answer-btn").each(function (index) {
-//     $(this).text(options[index]);
-//   });
-
-//   // Move to the next Pokémon in the pool for the next round
-//   currentindex++;
-// }
-
-// $(".answer-btn").click(function () {
-//   const userAnswer = $(this).text();
-//   // Store only the current answer, not a pattern
-//   userClickedPattern = [userAnswer]; // Replace previous answer with the new one
-//   checkAnswer(); // Call checkAnswer without an index
-// });
-
-// // Start the game on any key press
-// $(document).click(function () {
+gameStart();
+// Start game on keypress
+// $(document).keypress(function () {
 //   if (!started) {
-//     // Ensure you have an element with id="level-title" in your HTML!
-//     $("#level-title").text("Level " + level);
-//     // Shuffle the imgPool at the start of a new game
-//     shuffle(imgPool);
-//     nextSequence();
+//     $("#level-title").text("Level " + (currentindex + 1));
 //     started = true;
+//     correctCount = 0;
+//     wrongAnswers = 0;
+//     currentindex = 0;
+//     imgPool = shufflePairs(pokemonAnswers);
+//     $("#next-btn").hide();
+//     nextSequence();
 //   }
 // });
