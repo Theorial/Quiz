@@ -45,6 +45,7 @@ function shufflePairs(obj) {
   return Object.fromEntries(entries); // returns shuffled object
 }
 
+
 // console.log(shuffle(imgPool))
 
 function gameStart() {
