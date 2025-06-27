@@ -74,14 +74,74 @@ function shuffle(a) {
   return a;
 }
 function showGameOver() {
-  console.log("Game Over function running");
+  // Calculate score percentage
+  const totalQuestions = Object.keys(imgPool).length;
+  const scorePercentage = Math.round((correctCount / totalQuestions) * 100);
+
+  // Determine message based on performance
+  let message, titleColor, emoji;
+
+  if (scorePercentage >= 90) {
+    message = "Pokémon Master!";
+    titleColor = "gold";
+    emoji = "🦾";
+  } else if (scorePercentage >= 70) {
+    message = "Great Job!";
+    titleColor = "green";
+    emoji = "👍";
+  } else if (scorePercentage >= 50) {
+    message = "Good Try!";
+    titleColor = "blue";
+    emoji = "🙂";
+  } else {
+    message = "Keep Practicing!";
+    titleColor = "orange";
+    emoji = "💪";
+  }
+
+  // Create score breakdown
+  const scoreDetails = `
+    <div style="margin-top: 20px; text-align: center;">
+      <div style="font-size: 24px; color: ${titleColor}">
+        ${message} ${emoji}
+      </div>
+      <div style="margin: 15px 0; font-size: 18px">
+        <span style="color: green">✔ ${correctCount} Correct</span><br>
+        <span style="color: red">✖ ${wrongAnswers} Wrong</span><br>
+        <span style="color: #555">${scorePercentage}% Accuracy</span>
+      </div>
+      <div style="font-style: italic; color: #777">
+        ${getRandomEncouragement()}
+      </div>
+    </div>
+  `;
+
+  // Update the display
   $("#level-title").html(`
-    <span style="font-size: 28px;">Game Over!</span><br>
-    <strong>Correct:</strong> ${correctCount}<br>
-    <strong>Wrong:</strong> ${wrongAnswers}
+    <div style="text-align: center">
+      <div style="font-size: 32px; color: red;">
+        GAME OVER
+      </div>
+      ${scoreDetails}
+    </div>
   `);
+
   $("#next-btn").hide();
   $("#restart-btn").show();
+  $(".answer-btn").prop("disabled", true);
+}
+
+// Helper function for random encouragement messages
+function getRandomEncouragement() {
+  const messages = [
+    "Every Pokémon master started somewhere!",
+    "You'll do better next time!",
+    "The more you play, the better you'll get!",
+    "Even Ash lost battles before becoming a champion!",
+    "Your Pokémon knowledge is growing!",
+    "Catch 'em all on your next try!",
+  ];
+  return messages[Math.floor(Math.random() * messages.length)];
 }
 
 function nextSequence() {
@@ -126,9 +186,9 @@ $(".answer-btn").click(function () {
 // Handle Next button click
 $("#next-btn").click(function () {
   currentindex++;
-  console.log("Next clicked. Index:", currentindex); // Debug log
+  //console.log("Next clicked. Index:", currentindex); // Debug log
   if (currentindex >= Object.keys(imgPool).length) {
-    console.log("Calling showGameOver"); // Debug log
+    //console.log("Calling showGameOver"); // Debug log
     showGameOver();
     started = false;
     return;
@@ -142,16 +202,3 @@ $("#restart-btn").click(function () {
 });
 
 gameStart();
-// Start game on keypress
-// $(document).keypress(function () {
-//   if (!started) {
-//     $("#level-title").text("Level " + (currentindex + 1));
-//     started = true;
-//     correctCount = 0;
-//     wrongAnswers = 0;
-//     currentindex = 0;
-//     imgPool = shufflePairs(pokemonAnswers);
-//     $("#next-btn").hide();
-//     nextSequence();
-//   }
-// });
